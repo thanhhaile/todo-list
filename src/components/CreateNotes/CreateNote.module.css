@@ -1,6 +1,85 @@
 .createNote {
-  width: 300px;
+  width: 50%;
+  height: auto;
   margin: 20px auto;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+  border: gray solid 1px;
+  border-radius: 5px;
+}
+
+.createNote:focus {
+  background-color: blue;
+}
+
+.replaceInput {
+  height: auto;
+  font-size: 20px;
+  border-radius: 5px;
+  border: none;
+  padding: 10px;
+  resize: none;
+  line-height: 24px;
+}
+
+.replaceInput:focus {
+  outline: none;
+}
+
+.inputHeading {
+  border: none;
+  font-size: 22px;
+  line-height: 26px;
+  height: auto;
+  padding: 0 10px;
+  margin-top: 10px;
+  resize: none;
+  overflow: auto;
+}
+
+.inputHeading:focus {
+  outline: none;
+}
+
+.inputContent {
+  border: none;
+  height: auto;
+  font-size: 18px;
+  line-height: 24px;
+  padding: 0 10px;
+  margin-top: 15px;
+  overflow-wrap: break-word;
+  resize: none;
+  overflow: hidden;
+}
+
+.inputContent:focus {
+  outline: none;
+}
+
+.optionContainer {
+  text-align: end;
+}
+
+.optionContainer {
+  padding: 10px;
+}
+
+.buttonClose {
+  padding: 8px 20px;
+  border: none;
+  text-align: center;
+  font-size: 16px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.buttonClose:hover {
+  background-color: gray;
+  border-radius: 4px;
+}
+
+.buttonClose:focus {
+  outline: none;
 }

@@ -1,9 +1,11 @@
 import React from 'react';
 
 const NoteItemFocus = () => {
-  <div>
-    
-  </div>
+  return (
+    <div>
+
+    </div>
+  )
 };
 
 export default NoteItemFocus;

@@ -1,9 +1,13 @@
 import React from 'react';
 
-const NoteItem = () => {
-  <div>
-    
-  </div>
+const NoteItem = ({ item }) => {
+
+  console.log(item);
+  return (
+    <div>
+      
+    </div>
+  )
 };
 
 export default NoteItem;
