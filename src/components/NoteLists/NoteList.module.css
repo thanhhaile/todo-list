@@ -1,0 +1,20 @@
+.noteList {
+  width: 90%;
+  margin: 10px auto;
+  padding: 0 auto;
+  text-align: center;
+  display: grid;
+  grid-gap: 10px;
+  grid-auto-rows: 15px;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(200px, .35fr)
+  );
+}
+
+.responsive {
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(300px, 1fr)
+  );
+}

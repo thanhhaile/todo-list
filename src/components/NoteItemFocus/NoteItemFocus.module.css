@@ -1,0 +1,70 @@
+.overlay{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 5;
+  background-color: rgba(236, 236, 236, 0.5);
+  display: none;
+}
+
+.showOverlay{
+  display: block;
+}
+
+.noteItemFocus {
+  opacity: 0;
+  z-index: -1;
+  position: absolute;
+  transition: all .4s linear;
+  border: 1px solid gray;
+  overflow: hidden;
+}
+
+.showEditItem {
+  position: absolute;
+  opacity: 1;
+  display: flex;
+  top: 40% !important;
+  left: 50% !important;
+  transform: translate(-50%, -43%);
+  width: 50% !important;
+  background-color: white;
+  height: auto !important;
+  max-height: 90vh;
+  margin: 0 auto;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: gray solid 2px;
+  border-radius: 5px;
+  z-index: 10;
+}
+
+
+.inputHeading {
+  font-size: 22px;
+}
+
+.optionContainer {
+  text-align: right;
+  padding: 10px;
+}
+
+.buttonClose {
+  padding: 8px 20px;
+  border: none;
+  text-align: center;
+  font-size: 16px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.buttonClose:hover {
+  background-color: gray;
+  border-radius: 4px;
+}
+
+.buttonClose:focus {
+  outline: none;
+}

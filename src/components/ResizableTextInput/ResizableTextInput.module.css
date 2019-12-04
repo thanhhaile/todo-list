@@ -1,8 +1,15 @@
 .resizableTextInput {
-  font-size: 22px;
+  border: none;
+  font-size: 18px;
   height: auto;
+  max-height: 50vh;
   padding: 0 10px;
   margin-top: 10px;
-  /* resize: none; */
-  overflow: auto;
+  resize: none;
+  overflow: hidden;
+}
+
+.resizableTextInput:focus {
+  outline: none;
+  height: max-content;
 }

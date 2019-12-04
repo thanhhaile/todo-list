@@ -1,44 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
-import style from './ResizableTextInput.module.css';
-
+import style from "./ResizableTextInput.module.css";
 
 const ResizableTextInput = ({
-  className = style.resizableTextInput,
+  className,
   type = "text",
   value,
   placeholder = "Add content ...",
   lineHeight = 24,
-  onChange
+  onChange,
+  isEditing
 }) => {
+  const textInput = useRef();
 
-  // const [value, setValue] = useState("");
+  // let focus = useRef(false);
 
   const [rowNumber, setRowNumber] = useState(1);
 
-  const handleChangeHeadline = event => {
-    const previousRows = event.target.rows;
-    event.target.rows = 1;
-    const currentRows = Math.ceil(event.target.scrollHeight / lineHeight);
+  const handleChange = event => {
+    const previousRows = event.rows;
+    event.rows = 1; // reset
+    const currentRows = Math.ceil(event.scrollHeight / lineHeight);
 
-    if (currentRows === previousRows) {
-      event.target.rows = currentRows;
-    }
+    currentRows === previousRows
+      ? (event.rows = previousRows)
+      : setRowNumber(currentRows);
 
-    setRowNumber(currentRows);
-    onChange(event.target.value);
-    // setValue(event.target.value);
+    onChange(event.value);
   };
+
+  // handle when editing note to resize note
+  useEffect(() => {
+    handleChange(textInput.current);
+    // console.log(textInput.current.scrollHeight);
+  }, []);
+
+  useEffect(() => {
+    if (isEditing) {
+      textInput.current.focus();
+    }
+  }, [isEditing]);
 
   return (
     <textarea
-      className={className}
+      className={`${style.resizableTextInput} ${className}`}
       value={value}
       type={type}
       rows={rowNumber}
       placeholder={placeholder}
+      ref={textInput}
       autoFocus
-      onChange={e => handleChangeHeadline(e)}
+      onChange={e => handleChange(e.target)}
     />
   );
 };

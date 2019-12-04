@@ -1,0 +1,58 @@
+.noteItemContainer {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+
+.noteItemContainer:hover .deleteBtn {
+  opacity: 1;
+}
+
+.noteItemContainer:hover {
+  box-shadow: 0px 0px 7px gray;
+}
+
+.deleteBtn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+  background-color: gray;
+  border: none;
+  border-radius: 3px;
+  
+}
+
+.deleteBtn:focus {
+  outline: none;
+  background-color: red;
+}
+
+.noteItem {
+  padding: 5px;
+  box-sizing: border-box;
+  width: 100%;
+  opacity: 1;
+  transition: opacity .6s;
+  height: auto;
+}
+
+.resize {
+  /* height: 100%; */
+}
+
+.isEditing {
+  opacity: 0;
+  /* height: auto; */
+}
+
+.editItem {
+  display: none;
+}
+
+.showEditItem {
+  display: block;
+}
+

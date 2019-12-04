@@ -1,13 +1,11 @@
 import React from 'react';
-import CreateNote from './components/CreateNotes/CreateNote';
-import NoteLists from './components/NoteLists/NoteLists';
 import './App.css';
+import Routes from './routes/routes';
 
 function App() {
   return (
     <div className="App">
-      <CreateNote />
-      <NoteLists />
+      <Routes />
     </div>
   );
 }

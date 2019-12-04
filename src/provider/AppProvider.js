@@ -5,26 +5,36 @@ const AppProvider = ({children}) => {
 
   const [noteList, setNoteList] = useState({});
 
+  // console.log(noteList);
+  console.log('re render');
+  
   const addNote = (item) => {
-    // add something
+    console.log( 'add itemmmm')
     setNoteList({
       ...noteList,
       [item.id]: item
     });
   }
 
-  // const deleteNote = (id) => {
-  //   // delete note
-  // }
+  const deleteNote = (id) => {
+    delete noteList[id];
+    setNoteList({ ...noteList })
 
-  // const editNote = (id) => {
 
-  // }
+    this.setState({
+      item: this.state.item + 1
+    });
+
+    this.setState(state => ({
+      item: state.item + 1
+    }));
+  }
+
 
   const contextValue = {
     noteList,
     addNote,
-
+    deleteNote,
   }
 
   return (
