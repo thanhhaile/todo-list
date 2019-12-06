@@ -3,9 +3,7 @@ import classnames from "classnames";
 import { useHistory } from "react-router-dom";
 
 import { AppContext } from "../../context/AppContext";
-// import NoteItemFocus from "../NoteItemFocus/NoteItemFocus";
 
-// import { ResizeNoteItem } from "./NoteItem.style";
 import style from "./NoteItem.module.css";
 
 const NoteItem = ({ item }) => {
@@ -31,10 +29,8 @@ const NoteItem = ({ item }) => {
   }, [editing, item, setPosition]);
   
   const editNote = id => {
-
     // setPosition(resizeNote.current.getBoundingClientRect()); ////
     history.push(`/home/${id}`);
-
   };
 
   return (
@@ -45,7 +41,6 @@ const NoteItem = ({ item }) => {
         })}
       >
         <div
-          // <Link to={`/home/${item.id}`}
           className={classnames(style.noteItem, {
             [style.isEditing]: editing === item.id
           })}

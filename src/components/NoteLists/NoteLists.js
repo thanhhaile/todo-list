@@ -11,6 +11,8 @@ import style from "./NoteList.module.css";
 const NoteLists = () => {
   const { noteList } = useContext(AppContext);
 
+  if(!noteList) return null;
+
   return (
     <Masonry className={classnames(style.noteList, {})}>
       {values(noteList)

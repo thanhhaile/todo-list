@@ -7,7 +7,6 @@ import React, {
 
 import ResizableTextInput from "../ResizableTextInput/ResizableTextInput";
 import { AppContext } from "../../context/AppContext";
-// import { getKeysArray } from "../../utils/handleWithLocalStorage";
 
 import style from "./CreateNote.module.css";
 
@@ -51,9 +50,14 @@ const CreateNote = () => {
 
   const open = () => {
     setFocus(true);
-    let keys = Object.keys(noteList);  
-    // console.log(keys);  
-    let newId = keys.length > 0 ? parseInt(keys[keys.length - 1]) + 1 : 0;
+    let newId;
+    if(noteList) {
+      let keys = Object.keys(noteList);  
+      newId = keys.length > 0 ? parseInt(keys[keys.length - 1]) + 1 : 0;
+    } else {
+      newId = 0;
+    }
+    
     setItem({ ...item, id: newId });
   };
 

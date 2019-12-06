@@ -80,7 +80,6 @@ const NoteItemFocus = ({ history, match }) => {
 
   useEffect(() => {
     // setAnimate(true);
-    console.log("1");
     setTimeout(() => {
       setAnimate(true);
     }, 10);
@@ -108,6 +107,7 @@ const NoteItemFocus = ({ history, match }) => {
           type="text"
           onChange={updateHeadline}
           placeholder="Add headline ..."
+          editing
         />
 
         <ResizableTextInput
@@ -116,6 +116,7 @@ const NoteItemFocus = ({ history, match }) => {
           lineHeight={21}
           type="text"
           onChange={updateParagraph}
+          editing
         />
 
         <div className={styles.optionContainer}>

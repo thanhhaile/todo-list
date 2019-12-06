@@ -5,7 +5,8 @@ import { saveList, getList } from "../utils/handleWithLocalStorage";
 
 const AppProvider = ({ children }) => {
 
-  const [noteList, setNoteList] = useState(getList());
+  const list = getList();
+  const [noteList, setNoteList] = useState(list);
 
   const [position, setPosition] = useState();
 

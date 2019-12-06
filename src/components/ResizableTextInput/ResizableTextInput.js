@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 
 import style from "./ResizableTextInput.module.css";
 
@@ -9,25 +9,19 @@ const ResizableTextInput = ({
   placeholder = "Add content ...",
   lineHeight = 24,
   onChange,
-  // isEditing
+  editing
 }) => {
   const textInput = useRef();
 
-  // let focus = useRef(false);
-
-  // const [rowNumber, setRowNumber] = useState(1);
-
   const handleChange = event => {
     const previousRows = event.rows;
-    
-    // event.rows  = Math.ceil(event.scrollHeight / lineHeight);
+
     event.rows = 1; // reset to the min-row
     const currentRows = Math.ceil(event.scrollHeight / lineHeight);
 
     currentRows === previousRows
       ? (event.rows = previousRows)
-      : event.rows = currentRows;
-      // : setRowNumber(currentRows);
+      : (event.rows = currentRows);
 
     onChange(event.value);
   };
@@ -35,17 +29,12 @@ const ResizableTextInput = ({
   // handle when editing note to resize note
   useEffect(() => {
 
-    // handleChange(textInput.current);
-    setTimeout(() => handleChange(textInput.current), 400);
+    editing
+      ? setTimeout(() => handleChange(textInput.current), 350)
+      : handleChange(textInput.current);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // useEffect(() => {
-  //   if (isEditing) {
-  //     textInput.current.focus();
-  //   }
-  // }, [isEditing]);
 
   return (
     <textarea
@@ -56,7 +45,6 @@ const ResizableTextInput = ({
       ref={textInput}
       autoFocus
       onChange={e => handleChange(e.target)}
-      // rows={rowNumber}
     />
   );
 };
