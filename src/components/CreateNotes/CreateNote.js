@@ -2,24 +2,22 @@ import React, {
   useState,
   useEffect,
   useContext,
-  // useCallback,
   useRef
 } from "react";
-import _ from "lodash";
 
 import ResizableTextInput from "../ResizableTextInput/ResizableTextInput";
 import { AppContext } from "../../context/AppContext";
+// import { getKeysArray } from "../../utils/handleWithLocalStorage";
 
 import style from "./CreateNote.module.css";
 
 const CreateNote = () => {
-  const { addNote } = useContext(AppContext);
+  
+  const { addNote, noteList } = useContext(AppContext);
 
   const [focus, setFocus] = useState(false);
 
   const noteContainer = useRef();
-
-  // console.log('render createNote')
 
   const [item, setItem] = useState({
     headline: "",
@@ -53,28 +51,28 @@ const CreateNote = () => {
 
   const open = () => {
     setFocus(true);
-    setItem({ ...item, id: _.uniqueId(`note-`) });
+    let keys = Object.keys(noteList);  
+    // console.log(keys);  
+    let newId = keys.length > 0 ? parseInt(keys[keys.length - 1]) + 1 : 0;
+    setItem({ ...item, id: newId });
   };
 
   const close = () => {
     setFocus(false);
-    // console.log('something is different 0');
+
     if (item.headline || item.paragraph) {
       addNote(item);
-      // console.log('something is different 1');
     }
     clearInput();
   };
 
   const handleKeyWhenAdd = e => {
     if (e.key === "Escape" && focus) {
-      console.log("escape 2")
       close()
     }
   };
 
   const handleClickWhenAdd = e => {
-    // console.log(noteContainer.current.contains(e.target));
     if (focus && !noteContainer.current.contains(e.target)) {
       close();
     }

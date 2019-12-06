@@ -3,6 +3,8 @@
   overflow: hidden;
   border: 1px solid gray;
   border-radius: 5px;
+  width: 300px;
+  margin: 10px;
 }
 
 .noteItemContainer:hover .deleteBtn {
@@ -37,10 +39,6 @@
   opacity: 1;
   transition: opacity .6s;
   height: auto;
-}
-
-.resize {
-  /* height: 100%; */
 }
 
 .isEditing {

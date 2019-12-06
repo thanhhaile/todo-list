@@ -3,46 +3,40 @@ import React, {
   useContext,
   useEffect,
   useCallback,
-  useRef
+  useLayoutEffect
 } from "react";
 import classnames from "classnames";
-import { withRouter } from "react-router-dom";
 
 import { AppContext } from "../../context/AppContext";
 import ResizableTextInput from "../ResizableTextInput/ResizableTextInput";
 
 import styles from "./NoteItemFocus.module.css";
 
-const NoteItemFocus = ({
-  editItem,
-  setIsEditing,
-  isEditing,
-  history,
-  position,
-  calcSpanRow,
-  // resize,
-  // setResize
-}) => {
-  const newItem = useRef();
-  const overlay = useRef();
+const NoteItemFocus = ({ history, match }) => {
+  const { addNote, position, setEditing, noteList } = useContext(AppContext);
 
-  // console.log(position);
+  const [animate, setAnimate] = useState(false);
 
-  if (!isEditing && position) {
-    newItem.current.style.top = `${position.y}px`;
-    newItem.current.style.left = `${position.x}px`;
-    newItem.current.style.width = `${position.width}px`;
-    newItem.current.style.height = `${position.height}px`;
-  }
-
-  const { addNote } = useContext(AppContext);
-
+  const { id } = match.params;
+  const editItem = noteList[id];
   const [item, setItem] = useState({
     headline: editItem.headline,
     paragraph: editItem.paragraph,
     pin: editItem.pin,
-    id: editItem.id,
+    id: editItem.id
   });
+
+  useLayoutEffect(() => {
+    setEditing(parseInt(id));
+  }, [id, setEditing]);
+
+  let style = {};
+  if (position && position.id === parseInt(id)) {
+    style.top = `${position.y}px`;
+    style.left = `${position.x}px`;
+    style.width = `${position.width}px`;
+    style.height = `${position.height}px`;
+  }
 
   const updateHeadline = content => {
     setItem({
@@ -57,57 +51,55 @@ const NoteItemFocus = ({
       paragraph: content
     });
   };
-  
+
   const handleOutEditing = useCallback(() => {
-    console.log(item);
     addNote(item);
-    // console.log('calcccccccc');
-    // calcSpanRow();
-    setIsEditing(false);
-    history.push(`/home`);
+    setAnimate(false);
+    setTimeout(() => {
+      setEditing(false);
+      history.push(`/`);
+    }, 300);
+  }, [addNote, history, item, setEditing, setAnimate]);
 
-  }, [addNote, setIsEditing, history, item]);
-
-  const handleKeyWhenEdit = useCallback(e => {
-      if ((e.key === "Escape" || !e.key) && isEditing) {
-        console.log("escape 1")
+  const handleKeyWhenEdit = useCallback(
+    e => {
+      if (e.key === "Escape") {
         handleOutEditing();
       }
     },
-    [isEditing, handleOutEditing]
+    [handleOutEditing]
   );
 
   useEffect(() => {
-
-    const overlayElement = overlay.current;
-
     document.addEventListener("keyup", handleKeyWhenEdit);
-    overlayElement.addEventListener('click', handleOutEditing)
-    // document.getElementById('btn').addEventListener('click', handleKeyWhenEdit)
 
     return () => {
       document.removeEventListener("keyup", handleKeyWhenEdit);
-      overlayElement.removeEventListener('click', handleOutEditing)
-      // document.getElementById('btn').removeEventListener('click', handleKeyWhenEdit)
     };
   }, [handleKeyWhenEdit, handleOutEditing]);
+
+  useEffect(() => {
+    // setAnimate(true);
+    console.log("1");
+    setTimeout(() => {
+      setAnimate(true);
+    }, 10);
+  }, [setAnimate]);
 
   return (
     <>
       <div
-        id='btn'
         className={classnames(styles.overlay, {
-          [styles.showOverlay]: isEditing
+          [styles.showOverlay]: animate
         })}
-        ref={overlay}
-        // onClick
+        onClick={handleOutEditing}
       />
 
       <div
         className={classnames(styles.noteItemFocus, {
-          [styles.showEditItem]: isEditing
+          [styles.showEditItem]: animate
         })}
-        ref={newItem}
+        style={style}
       >
         <ResizableTextInput
           className={styles.inputHeading}
@@ -116,7 +108,6 @@ const NoteItemFocus = ({
           type="text"
           onChange={updateHeadline}
           placeholder="Add headline ..."
-          isEditing={isEditing}
         />
 
         <ResizableTextInput
@@ -125,14 +116,10 @@ const NoteItemFocus = ({
           lineHeight={21}
           type="text"
           onChange={updateParagraph}
-          isEditing={isEditing}
         />
 
         <div className={styles.optionContainer}>
-          <button
-            className={styles.buttonClose}
-            onClick={handleOutEditing}
-          >
+          <button className={styles.buttonClose} onClick={handleOutEditing}>
             Close
           </button>
         </div>
@@ -141,6 +128,4 @@ const NoteItemFocus = ({
   );
 };
 
-export default withRouter(NoteItemFocus);
-
-
+export default NoteItemFocus;

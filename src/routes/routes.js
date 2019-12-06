@@ -5,9 +5,8 @@ import HomePage from '../pages/HomePage/HomePage';
 const Routes = () => {
   return (
     <Switch>
-      <Route exact path='/' component={HomePage} />
-      <Route path='/home' component={HomePage} />
-      <Route path='/home/:id' component= {HomePage} />
+      <Route path='/' component={HomePage} /> 
+      {/* <Route path='/home' component={HomePage} /> */}
     </Switch>
   )
 }

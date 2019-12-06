@@ -15,9 +15,9 @@
 
 .noteItemFocus {
   opacity: 0;
-  z-index: -1;
+  /* z-index: -1; */
   position: absolute;
-  transition: all .4s linear;
+  transition: all .3s linear;
   border: 1px solid gray;
   overflow: hidden;
 }
@@ -31,7 +31,7 @@
   transform: translate(-50%, -43%);
   width: 50% !important;
   background-color: white;
-  height: auto !important;
+  height: max-content !important;
   max-height: 90vh;
   margin: 0 auto;
   flex-direction: column;

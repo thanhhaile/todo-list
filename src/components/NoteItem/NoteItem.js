@@ -1,106 +1,53 @@
-import React, {
-  useState,
-  useContext,
-  useEffect,
-  useCallback,
-  useRef
-} from "react";
+import React, { useRef, useContext, useLayoutEffect } from "react";
 import classnames from "classnames";
-import { withRouter } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import { AppContext } from "../../context/AppContext";
-import NoteItemFocus from "../NoteItemFocus/NoteItemFocus";
+// import NoteItemFocus from "../NoteItemFocus/NoteItemFocus";
 
-import { ResizeNoteItem } from "./NoteItem.style";
+// import { ResizeNoteItem } from "./NoteItem.style";
 import style from "./NoteItem.module.css";
 
-const NoteItem = ({ item, rowHeight = 15, history, gap = 10 }) => {
-
-  // let rowNum = useRef();
-  // let resizeNoteContainer = useRef();
-
+const NoteItem = ({ item }) => {
   let resizeNote = useRef();
+  const history = useHistory();
 
-  const { deleteNote } = useContext(AppContext);
+  const { deleteNote, setPosition, editing } = useContext(AppContext);
 
-  const [isEditing, setIsEditing] = useState(false);
+  
+  useLayoutEffect(() => {
+    if (editing === item.id) {
+      const itemPosition = resizeNote.current.getBoundingClientRect();
+      const newPosition = { 
+        width: itemPosition.width,
+        height: itemPosition.height,
+        x: itemPosition.left,
+        y: itemPosition.top, 
+        id: item.id
+      };
 
-  // const [resize, setResize] = useState(false);
-
-  const [ resizeRow, setResizeRow ] = useState(false);
-
-  const [position, setPosition] = useState();
-
+      setPosition(newPosition);
+    }
+  }, [editing, item, setPosition]);
+  
   const editNote = id => {
-    console.log(resizeNote.current, position);
 
-    setIsEditing(true);
-
-    //change url
+    // setPosition(resizeNote.current.getBoundingClientRect()); ////
     history.push(`/home/${id}`);
-  };
 
-  const calcSpanRow = useCallback(() => {
-    // debugger
-    console.log('calc span rowwwwwww');
-
-    console.log(resizeNote.current.clientHeight);
-
-
-    // craete dummy div with new content
-    // get height 
-
-    const newRowValue = Math.ceil(resizeNote.current.clientHeight / (rowHeight + gap));
-
-    console.log({newRowValue})
-
-    setResizeRow(newRowValue);
-
-    
-    // rowNum.current = Math.ceil(resizeNote.current.clientHeight / (rowHeight + gap));
-    // setResize(true);
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rowHeight, gap, item]);
-
-
-  useEffect(() => {
-
-    calcSpanRow();
-
-    document.addEventListener("resize", calcSpanRow);
-
-    return () => {
-      document.removeEventListener("resize", calcSpanRow);
-    };
-
-  }, [calcSpanRow]);
-
-  const handleHover = () => {
-
-    setPosition(resizeNote.current.getBoundingClientRect());
-
-    // console.log(resizeNote.current, position);
   };
 
   return (
     <>
-      <ResizeNoteItem
-        rowNum={resizeRow}
-        // rowNum={rowNum.current}
+      <div
         className={classnames(style.noteItemContainer, {
-          // [style.resize]: resizeRow,
-          // [style.resize]: resize,
-          [style.isEditing]: isEditing,
+          [style.isEditing]: editing === item.id
         })}
-        // ref={resizeNoteContainer}
       >
         <div
-          onMouseEnter={handleHover}
+          // <Link to={`/home/${item.id}`}
           className={classnames(style.noteItem, {
-            // [style.resize]: resizeRow,
-            // [style.resize]: resize,
-            [style.isEditing]: isEditing,
+            [style.isEditing]: editing === item.id
           })}
           onClick={() => editNote(item.id)}
           ref={resizeNote}
@@ -123,19 +70,9 @@ const NoteItem = ({ item, rowHeight = 15, history, gap = 10 }) => {
             x
           </button>
         </div>
-      </ResizeNoteItem>
-
-      <NoteItemFocus
-        isEditing={isEditing}
-        editItem={item}
-        setIsEditing={setIsEditing}
-        position={position}
-        calcSpanRow={calcSpanRow}
-        // setResize={setResize}
-        // resize={resize}
-      />
+      </div>
     </>
   );
 };
 
-export default withRouter(NoteItem);
+export default NoteItem;

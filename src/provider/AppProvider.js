@@ -1,47 +1,43 @@
-import React, { useState } from 'react';
-import { AppContext } from '../context/AppContext';
+import React, { useState } from "react";
 
-const AppProvider = ({children}) => {
+import { AppContext } from "../context/AppContext";
+import { saveList, getList } from "../utils/handleWithLocalStorage";
 
-  const [noteList, setNoteList] = useState({});
+const AppProvider = ({ children }) => {
 
-  // console.log(noteList);
-  console.log('re render');
-  
-  const addNote = (item) => {
-    console.log( 'add itemmmm')
-    setNoteList({
-      ...noteList,
-      [item.id]: item
-    });
-  }
+  const [noteList, setNoteList] = useState(getList());
 
-  const deleteNote = (id) => {
+  const [position, setPosition] = useState();
+
+  const [editing, setEditing] = useState(false);
+
+  const addNote = item => {
+    const newNoteList = { ...noteList, [item.id]: item };
+
+    setNoteList(newNoteList);
+    saveList(newNoteList);
+  };
+
+  const deleteNote = id => {
     delete noteList[id];
-    setNoteList({ ...noteList })
 
-
-    this.setState({
-      item: this.state.item + 1
-    });
-
-    this.setState(state => ({
-      item: state.item + 1
-    }));
-  }
-
+    setNoteList({ ...noteList });
+    saveList(noteList);
+  };
 
   const contextValue = {
     noteList,
     addNote,
     deleteNote,
-  }
+    position,
+    setPosition,
+    editing,
+    setEditing
+  };
 
   return (
-    <AppContext.Provider value={contextValue}>
-      {children}
-    </AppContext.Provider>
-  )
-}
+    <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
+  );
+};
 
 export default AppProvider;
