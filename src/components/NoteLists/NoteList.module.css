@@ -4,6 +4,9 @@
   padding: 0 auto;
   text-align: center;
 
+  
+  position: relative;
+
   /* width: 90%;
   margin: 10px auto;
   padding: 0 auto;
@@ -16,10 +19,15 @@
     minmax(200px, .35fr)
   ); */
 }
-/* 
-.responsive {
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(300px, 1fr)
-  );
-} */
+
+.muuri-item-dragging {
+  z-index: 3;   /* Required by Muuri */
+}
+
+.muuri-item-releasing {
+  z-index: 2; /* Required by Muuri */
+}
+
+.muuri-item-hidden {
+  z-index: 0; /* Required by Muuri */
+}

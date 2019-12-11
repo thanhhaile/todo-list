@@ -14,16 +14,18 @@ const ResizableTextInput = ({
   const textInput = useRef();
 
   const handleChange = event => {
-    const previousRows = event.rows;
-
-    event.rows = 1; // reset to the min-row
-    const currentRows = Math.ceil(event.scrollHeight / lineHeight);
-
-    currentRows === previousRows
-      ? (event.rows = previousRows)
-      : (event.rows = currentRows);
-
-    onChange(event.value);
+    if(event) {
+      const previousRows = event.rows;
+  
+      event.rows = 1; // reset to the min-row
+      const currentRows = Math.ceil(event.scrollHeight / lineHeight);
+  
+      currentRows === previousRows
+        ? (event.rows = previousRows)
+        : (event.rows = currentRows);
+  
+      onChange(event.value);
+    }
   };
 
   // handle when editing note to resize note

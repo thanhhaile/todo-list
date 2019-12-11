@@ -28,6 +28,7 @@ const NoteItemFocus = ({ history, match }) => {
 
   useLayoutEffect(() => {
     setEditing(parseInt(id));
+
   }, [id, setEditing]);
 
   let style = {};
@@ -82,7 +83,7 @@ const NoteItemFocus = ({ history, match }) => {
     // setAnimate(true);
     setTimeout(() => {
       setAnimate(true);
-    }, 10);
+    }, 100);
   }, [setAnimate]);
 
   return (

@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 
+
 import { AppContext } from "../context/AppContext";
-import { saveList, getList } from "../utils/handleWithLocalStorage";
+import { saveList, getList, getOrder, saveOrder } from "../utils/handleWithLocalStorage";
 
 const AppProvider = ({ children }) => {
 
   const list = getList();
+  const displayList = getOrder(); //------------
+
   const [noteList, setNoteList] = useState(list);
+
+  const [orderList, setOrderList] = useState(displayList); //------------
 
   const [position, setPosition] = useState();
 
@@ -14,26 +19,41 @@ const AppProvider = ({ children }) => {
 
   const addNote = item => {
     const newNoteList = { ...noteList, [item.id]: item };
+    let newOrderList = orderList;
+    if(!newOrderList.includes(item.id)) newOrderList.unshift(item.id)
 
-    setNoteList(newNoteList);
     saveList(newNoteList);
+    setNoteList(newNoteList);
+
+    // display order list
+    saveOrder(newOrderList);
+    setOrderList(newOrderList);
   };
 
   const deleteNote = id => {
     delete noteList[id];
+    const index = orderList.findIndex(i => i === id);
+    orderList.splice(index, 1);
 
     setNoteList({ ...noteList });
     saveList(noteList);
+
+    // display order list
+    saveOrder(orderList);
+    setOrderList(orderList);
   };
 
   const contextValue = {
     noteList,
+    setNoteList,
     addNote,
     deleteNote,
     position,
     setPosition,
     editing,
-    setEditing
+    setEditing,
+    orderList,
+    setOrderList
   };
 
   return (

@@ -1,37 +1,40 @@
-import React, { useRef, useContext, useLayoutEffect } from "react";
+import React, { useRef, useContext, useLayoutEffect, useEffect } from "react";
 import classnames from "classnames";
 import { useHistory } from "react-router-dom";
+import { SortableElement} from 'react-sortable-hoc';
+
 
 import { AppContext } from "../../context/AppContext";
 
 import style from "./NoteItem.module.css";
 
-const NoteItem = ({ item }) => {
+// const NoteItem = ({ item }) => {
+const NoteItem = SortableElement(({ item }) => {
   let resizeNote = useRef();
   const history = useHistory();
 
   const { deleteNote, setPosition, editing } = useContext(AppContext);
 
-  
   useLayoutEffect(() => {
-    if (editing === item.id) {
+    if (editing && (editing === item.id)) {
       const itemPosition = resizeNote.current.getBoundingClientRect();
-      const newPosition = { 
+      const newPosition = {
         width: itemPosition.width,
         height: itemPosition.height,
         x: itemPosition.left,
-        y: itemPosition.top, 
-        id: item.id
+        y: itemPosition.top,
+        id: item.id,
       };
-
       setPosition(newPosition);
     }
   }, [editing, item, setPosition]);
-  
+
   const editNote = id => {
     // setPosition(resizeNote.current.getBoundingClientRect()); ////
     history.push(`/home/${id}`);
+
   };
+
 
   return (
     <>
@@ -68,6 +71,6 @@ const NoteItem = ({ item }) => {
       </div>
     </>
   );
-};
+});
 
 export default NoteItem;

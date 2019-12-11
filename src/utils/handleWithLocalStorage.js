@@ -3,7 +3,7 @@ export const saveList = (list) => {
 }
 
 export const getList = () => {
-  if(localStorage) {
+  if(localStorage['list']) {
     return JSON.parse(localStorage.getItem('list'));
   } else {
     localStorage.setItem('list', JSON.stringify({}))
@@ -11,6 +11,18 @@ export const getList = () => {
   }
 }
 
+export const saveOrder = (orderList) => {
+  localStorage.setItem('orderList', JSON.stringify(orderList))
+}
+
+export const getOrder = () => {
+  if(localStorage['orderList']) {
+    return JSON.parse(localStorage.getItem('orderList'));
+  } else {
+    localStorage.setItem('orderList', JSON.stringify([]))
+    return JSON.parse(localStorage.getItem('orderList'));
+  }
+}
 
 
 // export const saveItem = (item) => {
