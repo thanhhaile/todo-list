@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext } from "react";
 import classnames from "classnames";
 import Masonry from 'react-masonry-component';
 import {SortableContainer} from 'react-sortable-hoc';
@@ -41,8 +41,6 @@ export default SortableList;
   //   Muuri.defaultOptions.showDuration = 400;
   //   new Muuri(ref.current)
   // }, [noteList]) 
-
-
 
   // const onSortEnd = ({oldIndex, newIndex}) => {
   //   setOrderList((orderList) => (arrayMove(orderList, oldIndex, newIndex)));

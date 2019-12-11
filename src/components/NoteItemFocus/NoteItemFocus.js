@@ -13,12 +13,23 @@ import ResizableTextInput from "../ResizableTextInput/ResizableTextInput";
 import styles from "./NoteItemFocus.module.css";
 
 const NoteItemFocus = ({ history, match }) => {
-  const { addNote, position, setEditing, noteList } = useContext(AppContext);
+  const {
+    addNote,
+    position,
+    setEditing,
+    noteList,
+    orderList,
+    pinList,
+    addPinNote
+  } = useContext(AppContext);
 
   const [animate, setAnimate] = useState(false);
 
   const { id } = match.params;
-  const editItem = noteList[id];
+  let editItem;
+  if (orderList.includes(parseInt(id))) editItem = noteList[id];
+  else if (pinList.order.includes(parseInt(id))) editItem = pinList.list[id];
+
   const [item, setItem] = useState({
     headline: editItem.headline,
     paragraph: editItem.paragraph,
@@ -28,7 +39,6 @@ const NoteItemFocus = ({ history, match }) => {
 
   useLayoutEffect(() => {
     setEditing(parseInt(id));
-
   }, [id, setEditing]);
 
   let style = {};
@@ -54,13 +64,13 @@ const NoteItemFocus = ({ history, match }) => {
   };
 
   const handleOutEditing = useCallback(() => {
-    addNote(item);
+    item.pin ? addPinNote(item) : addNote(item);
     setAnimate(false);
     setTimeout(() => {
       setEditing(false);
       history.push(`/`);
     }, 300);
-  }, [addNote, history, item, setEditing, setAnimate]);
+  }, [addNote, history, item, setEditing, setAnimate, addPinNote]);
 
   const handleKeyWhenEdit = useCallback(
     e => {

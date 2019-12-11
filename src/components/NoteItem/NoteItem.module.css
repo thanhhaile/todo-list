@@ -1,5 +1,5 @@
 .noteItemContainer {
-  position: absolute;
+  position: relative;
   overflow: hidden;
   border: 1px solid gray;
   border-radius: 5px;
@@ -9,12 +9,28 @@
   z-index: 1;
 }
 
-.noteItemContainer:hover .deleteBtn {
+.noteItemContainer:hover .deleteBtn, 
+.noteItemContainer:hover .pin{
   opacity: 1;
 }
 
 .noteItemContainer:hover {
   box-shadow: 0px 0px 7px gray;
+}
+
+.pin {
+  position: absolute;
+  top: 3px;
+  right: 9px;
+  opacity: 0;
+  cursor: pointer;
+  color: gray;
+  border: none;
+  font-size: 20px;
+}
+
+.pinned {
+  color: blue;
 }
 
 .deleteBtn {
@@ -26,7 +42,6 @@
   background-color: gray;
   border: none;
   border-radius: 3px;
-  
 }
 
 .deleteBtn:focus {

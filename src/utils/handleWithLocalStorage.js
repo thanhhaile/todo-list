@@ -1,7 +1,7 @@
+// note list
 export const saveList = (list) => {
   localStorage.setItem('list', JSON.stringify(list))
 }
-
 export const getList = () => {
   if(localStorage['list']) {
     return JSON.parse(localStorage.getItem('list'));
@@ -11,10 +11,10 @@ export const getList = () => {
   }
 }
 
+// order list 
 export const saveOrder = (orderList) => {
   localStorage.setItem('orderList', JSON.stringify(orderList))
 }
-
 export const getOrder = () => {
   if(localStorage['orderList']) {
     return JSON.parse(localStorage.getItem('orderList'));
@@ -24,38 +24,16 @@ export const getOrder = () => {
   }
 }
 
-
-// export const saveItem = (item) => {
-//   localStorage.setItem(`${item.id}` , JSON.stringify(item));
-// };
-
-// export const deleteItem = (id) => {
-//   localStorage.removeItem(id);
-// };
-
-// export const getItem = (id) => {
-//   return JSON.parse(localStorage.getItem(id));
-// }
-
-// export const getKeysArray = () => {
-//   let keys = Object.keys(localStorage);
-
-//   // find different solution
-//   const sortedKeys = keys.map(item => parseInt(item, 10)).sort((a,b) => a-b); 
-
-//   return sortedKeys; 
-// }
-
-// export const getAllStorage = () => {
-
-//   let values = [];
-//   const keys = getKeysArray();
-//   let i = keys.length;
-
-//   while ( i-- ) {
-//     // console.log(localStorage.key(i)); 
-//     values.push( JSON.parse(localStorage.getItem(keys[i])) );
-//   }
-
-//   return values;
-// }
+// pin note list
+export const savePinList = (pinList) => {
+  localStorage.setItem('pinList', JSON.stringify(pinList));
+}
+export const getPinList = () => {
+  if(localStorage['pinList']) {
+    return JSON.parse(localStorage.getItem('pinList'));
+  } else {
+    // localStorage.setItem('pinList', JSON.stringify({}))
+    localStorage.setItem('pinList', JSON.stringify({list: {}, order:[]}))
+    return JSON.parse(localStorage.getItem('pinList'));
+  }
+}

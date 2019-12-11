@@ -1,8 +1,7 @@
-import React, { useRef, useContext, useLayoutEffect, useEffect } from "react";
+import React, { useRef, useContext, useLayoutEffect } from "react";
 import classnames from "classnames";
 import { useHistory } from "react-router-dom";
-import { SortableElement} from 'react-sortable-hoc';
-
+import { SortableElement } from "react-sortable-hoc";
 
 import { AppContext } from "../../context/AppContext";
 
@@ -13,17 +12,25 @@ const NoteItem = SortableElement(({ item }) => {
   let resizeNote = useRef();
   const history = useHistory();
 
-  const { deleteNote, setPosition, editing } = useContext(AppContext);
+  const {
+    setPosition,
+    editing,
+    addPinNote,
+    deletePinNote,
+    completelyDelete,
+    deleteNote,
+    addNote
+  } = useContext(AppContext);
 
   useLayoutEffect(() => {
-    if (editing && (editing === item.id)) {
+    if (editing === item.id) {
       const itemPosition = resizeNote.current.getBoundingClientRect();
       const newPosition = {
         width: itemPosition.width,
         height: itemPosition.height,
         x: itemPosition.left,
         y: itemPosition.top,
-        id: item.id,
+        id: item.id
       };
       setPosition(newPosition);
     }
@@ -32,9 +39,18 @@ const NoteItem = SortableElement(({ item }) => {
   const editNote = id => {
     // setPosition(resizeNote.current.getBoundingClientRect()); ////
     history.push(`/home/${id}`);
-
   };
 
+  const togglePin = item => {
+    const newItem = { ...item, pin: !item.pin };
+    if (item.pin) {
+      addNote(newItem);
+      deletePinNote(item.id);
+    } else {
+      addPinNote(newItem);
+      deleteNote(item.id);
+    }
+  };
 
   return (
     <>
@@ -61,9 +77,20 @@ const NoteItem = SortableElement(({ item }) => {
         </div>
 
         <div>
+          <span
+            className={classnames(style.pin, {
+              [style.pinned]: item.pin
+            })}
+            onClick={() => togglePin(item)}
+          >
+            <i className="fa fa-map-pin"></i>
+          </span>
+        </div>
+
+        <div>
           <button
             className={style.deleteBtn}
-            onClick={() => deleteNote(item.id)}
+            onClick={() => completelyDelete(item.id, item.pin)}
           >
             x
           </button>
