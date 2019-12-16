@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import { Route } from "react-router-dom";
 import arrayMove from "array-move";
 
@@ -6,32 +6,41 @@ import { AppContext } from "../../context/AppContext";
 
 import CreateNote from "../../components/CreateNotes/CreateNote";
 import NoteItemFocus from "../../components/NoteItemFocus/NoteItemFocus";
-import SortableList from "../../components/NoteLists/NoteLists";
-// import NoteLists from "../../components/NoteLists/NoteLists";
-import PinNoteList from "../../components/PinNoteList/PinNoteList";
-import { saveOrder, savePinList } from "../../utils/handleWithLocalStorage";
-
+import BetterNoteList from "../../components/BetterNoteList/BetterNoteList";
 
 const HomePage = () => {
-  const { setOrderList, orderList, pinList, setPinList } = useContext(
-    AppContext
+  const { noteList, setList, setInternalIndex } = useContext(AppContext);
+
+  const onSortEndHandle = useCallback(
+    (oldIndex, newIndex, orderList, pin) => {
+      const newOrderList = arrayMove(orderList, oldIndex, newIndex);
+
+      setInternalIndex(newOrderList, noteList.list);
+
+      // let newList = {
+      //   ...noteList,
+      //   order: pin === 'pin' ? [...noteList.order] : [...newOrderList],
+      //   orderPin: pin === 'not-pin' ? [...newOrderList] : [...noteList.orderPin]
+      // }
+
+      let newList;
+      if (pin === "pin") {
+        newList = {
+          list: { ...noteList.list },
+          order: [...noteList.order],
+          orderPin: [...newOrderList]
+        };
+      } else {
+        newList = {
+          list: { ...noteList.list },
+          order: [...newOrderList],
+          orderPin: [...noteList.orderPin]
+        };
+      }
+      setList(newList);
+    },
+    [noteList, setInternalIndex, setList]
   );
-
-  const onSortEnd = ({ oldIndex, newIndex }) => {
-    const newOrderList = arrayMove(orderList, oldIndex, newIndex);
-
-    saveOrder(newOrderList);
-    setOrderList(newOrderList);
-
-    // setOrderList((orderList) => (arrayMove(orderList, oldIndex, newIndex)));
-  };
-
-  const onSortEndPin = ({ oldIndex, newIndex }) => {
-    const newPinList = arrayMove(pinList.order, oldIndex, newIndex);
-
-    savePinList({ list: { ...pinList.list }, order: newPinList });
-    setPinList({ list: { ...pinList.list }, order: newPinList });
-  };
 
   const styleHeadline = {
     textAlign: "left",
@@ -42,19 +51,34 @@ const HomePage = () => {
   return (
     <>
       <CreateNote />
-      {pinList.order.length ? (
-        <h3 style={styleHeadline}>Notes have been pinned</h3>
-      ) : (
-        ""
-      )}
-      <PinNoteList onSortEnd={onSortEndPin} axis={"xy"} pressDelay={10} />
 
-      {orderList.length && pinList.order.length ? (
-        <h3 style={styleHeadline}>Others</h3>
-      ) : (
-        ""
+      {noteList.orderPin.length > 0 && (
+        <h3 style={styleHeadline}>Notes have been pinned</h3>
       )}
-      <SortableList onSortEnd={onSortEnd} axis={"xy"} pressDelay={10} />
+
+      <BetterNoteList
+        axis={"xy"} 
+        pressDelay={200}
+        order={noteList.orderPin}
+        list={noteList.list}
+        onSortEnd={({ oldIndex, newIndex }) =>
+          onSortEndHandle(oldIndex, newIndex, noteList.orderPin, "pin")
+        }
+      />
+
+      {noteList.order.length > 0 && noteList.orderPin.length > 0 && (
+        <h3 style={styleHeadline}>Others</h3>
+      )}
+
+      <BetterNoteList
+        axis={"xy"}
+        pressDelay={200}
+        order={noteList.order}
+        list={noteList.list}
+        onSortEnd={({ oldIndex, newIndex }) =>
+          onSortEndHandle(oldIndex, newIndex, noteList.order, "not-pin")
+        }
+      />
 
       <Route path="/home/:id" component={NoteItemFocus} />
     </>

@@ -7,19 +7,15 @@ import { AppContext } from "../../context/AppContext";
 
 import style from "./NoteItem.module.css";
 
-// const NoteItem = ({ item }) => {
-const NoteItem = SortableElement(({ item }) => {
+const NoteItem = SortableElement(({ item, index }) => {
   let resizeNote = useRef();
   const history = useHistory();
 
   const {
     setPosition,
     editing,
-    addPinNote,
-    deletePinNote,
-    completelyDelete,
     deleteNote,
-    addNote
+    togglePinItem,
   } = useContext(AppContext);
 
   useLayoutEffect(() => {
@@ -41,16 +37,16 @@ const NoteItem = SortableElement(({ item }) => {
     history.push(`/home/${id}`);
   };
 
-  const togglePin = item => {
-    const newItem = { ...item, pin: !item.pin };
-    if (item.pin) {
-      addNote(newItem);
-      deletePinNote(item.id);
-    } else {
-      addPinNote(newItem);
-      deleteNote(item.id);
-    }
-  };
+  // const togglePin = id => {
+  //   const newItem = { ...item, pin: !item.pin };
+  //   if (item.pin) {
+  //     addNote(newItem);
+  //     deletePinNote(item.id);
+  //   } else {
+  //     addPinNote(newItem);
+  //     deleteNote(item.id);
+  //   }
+  // };
 
   return (
     <>
@@ -77,20 +73,20 @@ const NoteItem = SortableElement(({ item }) => {
         </div>
 
         <div>
-          <span
+          <button
             className={classnames(style.pin, {
               [style.pinned]: item.pin
             })}
-            onClick={() => togglePin(item)}
+            onClick={() => togglePinItem(item.id)}
           >
             <i className="fa fa-map-pin"></i>
-          </span>
+          </button>
         </div>
 
         <div>
           <button
             className={style.deleteBtn}
-            onClick={() => completelyDelete(item.id, item.pin)}
+            onClick={() => deleteNote(item.id)}
           >
             x
           </button>

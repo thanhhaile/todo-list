@@ -14,27 +14,23 @@ import styles from "./NoteItemFocus.module.css";
 
 const NoteItemFocus = ({ history, match }) => {
   const {
-    addNote,
     position,
     setEditing,
     noteList,
-    orderList,
-    pinList,
-    addPinNote
+    addEditedNote,
   } = useContext(AppContext);
 
   const [animate, setAnimate] = useState(false);
 
   const { id } = match.params;
-  let editItem;
-  if (orderList.includes(parseInt(id))) editItem = noteList[id];
-  else if (pinList.order.includes(parseInt(id))) editItem = pinList.list[id];
+  const editItem = noteList.list[id];
 
   const [item, setItem] = useState({
     headline: editItem.headline,
     paragraph: editItem.paragraph,
     pin: editItem.pin,
-    id: editItem.id
+    id: editItem.id,
+    internalIndex: editItem.internalIndex
   });
 
   useLayoutEffect(() => {
@@ -64,13 +60,14 @@ const NoteItemFocus = ({ history, match }) => {
   };
 
   const handleOutEditing = useCallback(() => {
-    item.pin ? addPinNote(item) : addNote(item);
+    // item.pin ? addPinNote(item) : addNote(item);
+    addEditedNote(item);
     setAnimate(false);
     setTimeout(() => {
       setEditing(false);
       history.push(`/`);
     }, 300);
-  }, [addNote, history, item, setEditing, setAnimate, addPinNote]);
+  }, [addEditedNote, item, setEditing, history]);
 
   const handleKeyWhenEdit = useCallback(
     e => {
@@ -90,7 +87,6 @@ const NoteItemFocus = ({ history, match }) => {
   }, [handleKeyWhenEdit, handleOutEditing]);
 
   useEffect(() => {
-    // setAnimate(true);
     setTimeout(() => {
       setAnimate(true);
     }, 100);

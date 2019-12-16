@@ -18,13 +18,13 @@ const PinNoteList = SortableContainer(() => {
     <Masonry className={classnames(style.pinNoteList)}>
       {pinList.order.map((id, index) => (
         <NoteItem
-        key={id}
-        item={pinList.list[id]}
-        index={index}
+          key={id}
+          item={pinList.list[id]}
+          index={index}
         />
       ))}
     </Masonry>
-  )
+  );
 });
 
 export default PinNoteList;
